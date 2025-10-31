@@ -1,0 +1,875 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Cellphone Workshop Guide</title>
+        <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                padding: 20px;
+            }
+
+            .container {
+                max-width: 900px;
+                margin: 0 auto;
+                background: white;
+                border-radius: 20px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                overflow: hidden;
+            }
+
+            .header {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 40px 30px;
+                text-align: center;
+            }
+
+            .header h1 {
+                font-size: 2.5em;
+                margin-bottom: 10px;
+            }
+
+            .header p {
+                font-size: 1.2em;
+                opacity: 0.95;
+            }
+
+            .search-container {
+                padding: 30px;
+                background: #f8f9fa;
+                border-bottom: 2px solid #e9ecef;
+            }
+
+            .search-box {
+                width: 100%;
+                padding: 18px 24px;
+                font-size: 1.1em;
+                border: 3px solid #667eea;
+                border-radius: 12px;
+                outline: none;
+                transition: all 0.3s;
+            }
+
+            .search-box:focus {
+                border-color: #764ba2;
+                box-shadow: 0 0 0 4px rgba(118, 75, 162, 0.1);
+            }
+
+            .content {
+                padding: 30px;
+            }
+
+            .topic-card {
+                margin-bottom: 15px;
+                border: 2px solid #e9ecef;
+                border-radius: 12px;
+                overflow: hidden;
+                transition: all 0.3s;
+            }
+
+            .topic-card:hover {
+                border-color: #667eea;
+                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+            }
+
+            .topic-header {
+                padding: 24px;
+                background: #f8f9fa;
+                cursor: pointer;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                transition: all 0.3s;
+                user-select: none;
+            }
+
+            .topic-header:hover {
+                background: #e9ecef;
+            }
+
+            .topic-header.active {
+                background: #667eea;
+                color: white;
+            }
+
+            .topic-title {
+                font-size: 1.3em;
+                font-weight: 600;
+            }
+
+            .toggle-icon {
+                font-size: 1.5em;
+                transition: transform 0.3s;
+            }
+
+            .toggle-icon.open {
+                transform: rotate(180deg);
+            }
+
+            .topic-content {
+                padding: 0 24px;
+                max-height: 0;
+                overflow: hidden;
+                transition: all 0.4s ease-in-out;
+            }
+
+            .topic-content.open {
+                padding: 24px;
+                max-height: 2000px;
+            }
+
+            .topic-content ul {
+                list-style: none;
+                padding-left: 0;
+            }
+
+            .topic-content > ul > li {
+                margin-bottom: 16px;
+                padding-left: 30px;
+                position: relative;
+                font-size: 1.1em;
+                line-height: 1.6;
+            }
+
+            .topic-content > ul > li:before {
+                content: "▸";
+                position: absolute;
+                left: 8px;
+                color: #667eea;
+                font-weight: bold;
+                font-size: 1.2em;
+            }
+
+            .topic-content ul ul {
+                margin-top: 12px;
+                padding-left: 20px;
+            }
+
+            .topic-content ul ul li {
+                margin-bottom: 10px;
+                padding-left: 25px;
+                position: relative;
+                font-size: 1em;
+                color: #495057;
+            }
+
+            .topic-content ul ul li:before {
+                content: "•";
+                position: absolute;
+                left: 8px;
+                color: #764ba2;
+            }
+
+            .no-results {
+                text-align: center;
+                padding: 60px 30px;
+                color: #6c757d;
+            }
+
+            .no-results-icon {
+                font-size: 4em;
+                margin-bottom: 20px;
+            }
+
+            .no-results h2 {
+                font-size: 1.8em;
+                margin-bottom: 10px;
+            }
+
+            .no-results p {
+                font-size: 1.2em;
+            }
+
+            .results-count {
+                padding: 0 30px 20px;
+                color: #6c757d;
+                font-size: 1.05em;
+            }
+
+            @media (max-width: 768px) {
+                .header h1 {
+                    font-size: 2em;
+                }
+
+                .header p {
+                    font-size: 1em;
+                }
+
+                .topic-title {
+                    font-size: 1.1em;
+                }
+
+                .search-box {
+                    font-size: 1em;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script type="text/babel">
+            const { useState, useMemo } = React;
+
+            const workshopData = [
+                {
+                    title: "iPhone vs Android",
+                    content: [
+                        "Daily experience is now quite similar: both run touch-based apps, have voice assistants, cameras, and accessibility tools.",
+                        {
+                            main: "Messaging bubble colors and why they matter",
+                            sub: [
+                                "Blue bubbles on iPhone mean iMessage (uses Wi-Fi/data, works iPhone-to-iPhone).",
+                                "Green bubbles are standard text (SMS/MMS) used when messaging Android or without internet.",
+                                "Newer RCS texting aims to make cross-platform chats richer, but it is still rolling out.",
+                            ],
+                        },
+                        {
+                            main: "Ecosystem and app store differences",
+                            sub: [
+                                "Apple App Store purchases stay on iPhone/iPad; Google Play purchases stay on Android.",
+                                "Subscriptions and apps rarely transfer, so consider ongoing costs before switching.",
+                                "Accessories (watches, trackers) often work best within the same ecosystem.",
+                            ],
+                        },
+                        {
+                            main: "Switching is doable but takes planning",
+                            sub: [
+                                "Back up contacts, photos, and notes first (iCloud or Google).",
+                                "Expect to sign in to accounts again and find replacement apps.",
+                                "Budget time to learn the new settings menus and gestures.",
+                            ],
+                        },
+                        "Hardware differences are modest: Apple controls its devices, while Android offers many brands and price ranges to fit different budgets.",
+                    ],
+                },
+                {
+                    title: "How to Spot Phishing Attempts",
+                    content: [
+                        "Phishing happens when someone pretends to be a trusted company or person to trick you into sharing information or money.",
+                        {
+                            main: "Red flags in emails and texts",
+                            sub: [
+                                "Urgency tactics",
+                                "Spelling errors",
+                                "Requests for personal information",
+                                "Unexpected attachments or invoices",
+                            ],
+                        },
+                        "Verify the sender: ask how you can call them back using the official number on the organization’s website.",
+                        "Legitimate organizations are happy to point you to their published contact info; scammers usually push you to act immediately and refuse that request.",
+                        "If something feels off, stop responding and double-check before clicking or paying.",
+                        {
+                            main: "Common phishing scenarios targeting seniors in Canada",
+                            sub: [
+                                "CRA tax refund or overdue payment threats",
+                                "Canada Post delivery fee or customs scam",
+                                "Grandparent scam — sometimes using AI voice impersonation",
+                                "Tech support refund scams asking for remote access",
+                            ],
+                        },
+                        {
+                            main: "If you suspect a phishing attempt",
+                            sub: [
+                                "Pause and call a trusted family member or tech-savvy friend first.",
+                                "Contact the real company using the phone number on your bill or their official site.",
+                                "Report impersonation attempts to local police or the Canadian Anti-Fraud Centre.",
+                                "Change passwords and watch bank/credit accounts if you clicked or shared details.",
+                            ],
+                        },
+                    ],
+                },
+                {
+                    title: "Security Best Practices",
+                    content: [
+                        "Turn on automatic updates so security fixes arrive quickly, even if the interface changes occasionally.",
+                        "Staying up to date prevents known vulnerabilities that scammers use to take over phones.",
+                        {
+                            main: "Create memorable, strong passwords",
+                            sub: [
+                                "Avoid reusing the same password on multiple accounts.",
+                                "Use a personal pattern or mnemonic (e.g., `Fruit_SomethingYouKnow` `Appl3_Orang3_DogsName!`).",
+                                "Mix letters, numbers, and symbols; length matters more than complexity.",
+                            ],
+                        },
+                        "Turn on biometric sign-in (Face ID, Touch ID, fingerprint) for quicker, more secure access without typing passwords.",
+                        "Use the built-in password managers in iOS (Keychain) or Android/Google Password Manager to store and autofill credentials securely.",
+                        "Do not share passwords—sharing streaming or shopping logins increases the chance of leaks and lost access.",
+                        "Enable additional protections like two-factor authentication when available for banking and email.",
+                    ],
+                },
+                {
+                    title: "What is the Cloud?",
+                    content: [
+                        "Think of the cloud as trusted internet storage: your phone keeps a copy and syncs another copy to Apple’s or Google’s servers.",
+                        "If a phone is lost, damaged, or replaced, turning on iCloud (iPhone) or Google Drive/Google Photos (Android) restores photos, contacts, and notes.",
+                        {
+                            main: "Backup and pricing basics",
+                            sub: [
+                                "Both Apple and Google include a small free tier (e.g., 5 GB on iCloud, 15 GB on Google).",
+                                "Heavy photo takers may need a paid plan for more space (a few dollars per month).",
+                                "Storage plans can be shared with family members to save money.",
+                            ],
+                        },
+                        {
+                            main: "Common concerns about cloud storage",
+                            sub: [
+                                "“Does the public see my photos?” — No, files stay private to your account unless you share them.",
+                                "“Will it eat my data plan?” — Sync happens over Wi-Fi by default; you can turn off cellular uploads.",
+                                "“Is it hard to use?” — Once set up, backups happen automatically in the background.",
+                                "“What if I forget the password?” — Keep recovery info up to date; password managers help here.",
+                            ],
+                        },
+                    ],
+                },
+                {
+                    title: "Biometric Security (FaceID, TouchID, Fingerprint)",
+                    content: [
+                        {
+                            main: "How facial and fingerprint recognition work",
+                            sub: [
+                                "Camera or sensor maps unique points on your face or fingertip.",
+                                "A secure chip stores an encrypted copy; the photo/fingerprint image is never uploaded.",
+                                "The phone compares the live scan to that stored template each time you unlock.",
+                            ],
+                        },
+                        {
+                            main: "Setting them up properly",
+                            sub: [
+                                "Find Face ID/Touch ID settings (iPhone) or Biometrics (Android).",
+                                "Remove glasses or smudges during the first scan; add an alternate appearance if you wear them often.",
+                                "Enroll more than one finger in case of bandages or dry skin.",
+                            ],
+                        },
+                        {
+                            main: "Privacy and security benefits",
+                            sub: [
+                                "Faster unlocks mean you actually keep the phone locked when not in use.",
+                                "Harder for others to guess or shoulder-surf compared with passcodes.",
+                                "The biometric data stays on the device—Apple and Google do not receive your face or fingerprint.",
+                            ],
+                        },
+                        {
+                            main: "When you still need a passcode",
+                            sub: [
+                                "After restarting the phone or leaving it locked for 48 hours.",
+                                "Changing security settings, installing profiles, or adding new biometrics.",
+                                "When the sensor cannot read (winter gloves, masks without Face ID setup).",
+                            ],
+                        },
+                        {
+                            main: "If it does not recognize you",
+                            sub: [
+                                "Type the passcode to unlock, then clean the sensor and try again.",
+                                "Re-enroll your face/fingerprint if your appearance changes significantly.",
+                                "Seek service if the hardware keeps failing; repeated failures can disable Face/Touch ID until reset.",
+                            ],
+                        },
+                    ],
+                },
+                {
+                    title: "How Often to Update Your Devices",
+                    content: [
+                        "Turn on automatic updates for both apps and the operating system so security fixes arrive quickly.",
+                        {
+                            main: "App updates vs. system updates",
+                            sub: [
+                                "App updates come from the App Store/Google Play and tweak individual apps.",
+                                "System updates come from Apple or your Android phone maker and change the whole device software.",
+                                "Small point releases (e.g., 16.5 → 16.6) usually fix bugs; major jumps (16 → 17) redesign features.",
+                            ],
+                        },
+                        {
+                            main: "Before big updates",
+                            sub: [
+                                "Confirm backups are running (iCloud or Google backup) so you can restore if anything breaks.",
+                                "Keep the phone charging and on Wi-Fi during the install.",
+                                "Read the update summary to know what might look different.",
+                            ],
+                        },
+                        {
+                            main: "How long phones receive updates",
+                            sub: [
+                                "iPhones typically get 5–6 years of iOS updates after release.",
+                                "Google Pixel phones get at least 5 years; Samsung offers 4–7 depending on model.",
+                                "Very low-cost Android phones may stop earlier—plan for replacements every few years.",
+                            ],
+                        },
+                    ],
+                },
+                {
+                    title: "Cell Phone Plans and Features",
+                    content: [
+                        {
+                            main: "Understand Canadian plan options",
+                            sub: [
+                                "Fewer carriers mean higher prices—compare major brands (Bell/TELUS/Rogers) with their flanker brands (Koodo, Fido, Virgin, etc.).",
+                                "Limited data plans stop or charge extra when you hit the cap; “unlimited” plans slow speeds after the high-speed bucket.",
+                                "Ask about senior discounts or bundled services (home internet, TV) for savings.",
+                            ],
+                        },
+                        {
+                            main: "Talk, text, and data features to review",
+                            sub: [
+                                "Most plans now include unlimited nationwide calling and texting.",
+                                "Check if voicemail, call display, and hotspot tethering are included by default.",
+                                "Look for data rollover or shareable data if you have multiple devices.",
+                            ],
+                        },
+                        {
+                            main: "Travel-friendly options",
+                            sub: [
+                                "If you visit the U.S. or overseas often, compare roaming passes vs. buying a local SIM/eSIM.",
+                                "Some carriers offer “Roam Like Home” daily fees—make sure you know how to turn roaming off when not needed.",
+                                "Confirm your phone is unlocked if you plan to use another carrier while abroad.",
+                            ],
+                        },
+                        {
+                            main: "Stay on top of usage and bills",
+                            sub: [
+                                "Use the carrier’s app or dial-in shortcode to check data usage mid-cycle.",
+                                "Set usage alerts so you don’t go over caps.",
+                                "Review bills for add-on charges or plan changes every few months.",
+                            ],
+                        },
+                        "Consider switching plans when your needs change or when better promos appear—especially after your contract term ends.",
+                    ],
+                },
+                {
+                    title: "WiFi vs. Cellular Data",
+                    content: [
+                        {
+                            main: "Key differences",
+                            sub: [
+                                "Wi-Fi uses a local network (home router, café) and usually does not count against your data plan.",
+                                "Cellular data uses your carrier’s towers and counts toward your monthly data limit.",
+                                "Both let you browse the web, email, and stream video; choose Wi-Fi when available to save data.",
+                            ],
+                        },
+                        {
+                            main: "Connecting to Wi-Fi",
+                            sub: [
+                                "Open Wi-Fi settings, pick the network name (SSID), and enter the password once.",
+                                "Phones remember trusted networks and reconnect automatically next time.",
+                                "Look for the Wi-Fi fan icon at the top of the screen to confirm connection.",
+                            ],
+                        },
+                        {
+                            main: "Using public Wi-Fi safely",
+                            sub: [
+                                "Prefer networks that require a password; avoid unknown open networks for banking or shopping.",
+                                "Do not share sensitive information on public Wi-Fi unless using secure websites (`https`).",
+                                "Log out when finished in a public place and forget networks you no longer use.",
+                            ],
+                        },
+                        {
+                            main: "Managing cellular data",
+                            sub: [
+                                "Turn cellular data off temporarily if you are near your monthly cap.",
+                                "Most phones show which apps use the most data—close heavy users or switch them to Wi-Fi.",
+                                "Use low-data modes or download content (music, maps) over Wi-Fi for trips.",
+                            ],
+                        },
+                        {
+                            main: "Airplane mode",
+                            sub: [
+                                "Disables all wireless radios (cellular, Wi-Fi, Bluetooth) with one tap—use on flights or to save battery.",
+                                "You can turn Wi-Fi back on manually while still in airplane mode if the airline allows it.",
+                                "Remember to turn airplane mode off to receive calls and texts again.",
+                            ],
+                        },
+                    ],
+                },
+                {
+                    title: "Bluetooth Basics",
+                    content: [
+                        {
+                            main: "What Bluetooth does",
+                            sub: [
+                                "Short-range wireless link for accessories such as headphones, hearing aids, car infotainment, keyboards.",
+                                "Works best within a room (about 10 meters) without walls or metal blocking the signal.",
+                                "No data charges—Bluetooth is separate from Wi-Fi and cellular plans.",
+                            ],
+                        },
+                        {
+                            main: "Pairing new accessories",
+                            sub: [
+                                "Turn on the accessory and put it in pairing mode (often by holding a button).",
+                                "Open Bluetooth settings on the phone and tap the accessory name when it appears.",
+                                "Some devices ask for a code like 0000; the phone usually fills this in automatically.",
+                            ],
+                        },
+                        {
+                            main: "Managing paired devices",
+                            sub: [
+                                "You can rename accessories (e.g., “Dave’s Hearing Aid”) for easier recognition.",
+                                "Tap “Disconnect” to stop using it temporarily or “Forget” to remove it entirely.",
+                                "Phones remember multiple accessories and reconnect when they’re nearby and powered on.",
+                            ],
+                        },
+                        {
+                            main: "Troubleshooting tips",
+                            sub: [
+                                "If it won’t connect, toggle Bluetooth off/on or restart the accessory.",
+                                "Make sure the accessory is charged and not already paired with someone else’s device.",
+                                "Delete (forget) the device and pair again if the connection keeps dropping.",
+                            ],
+                        },
+                        "Leaving Bluetooth on has minimal battery impact on modern phones; turn it off only if you never use accessories.",
+                    ],
+                },
+                {
+                    title: "Scam Calls and Texts",
+                    content: [
+                        {
+                            main: "Common scam patterns",
+                            sub: [
+                                "Robocalls pretending to be banks, CRA, or delivery companies.",
+                                "Spoofed caller ID—numbers may look local or mimic a trusted organization.",
+                                "Texts with links to “missed deliveries,” fake contests, or refund claims.",
+                            ],
+                        },
+                        {
+                            main: "Protect yourself during a suspicious call",
+                            sub: [
+                                "Hang up if pressured to act immediately or pay with gift cards/crypto.",
+                                "Never share personal info unless you dialed the organization yourself.",
+                                "Ask for a callback number, then verify it on the official website before responding.",
+                            ],
+                        },
+                        {
+                            main: "Handling scam texts",
+                            sub: [
+                                "Do not tap links—delete the message.",
+                                "Forward SMS scams to 7726 (SPAM) to report to your carrier.",
+                                "Block the sender on your phone to reduce repeat attempts.",
+                            ],
+                        },
+                        {
+                            main: "Use built-in filters and call blocking",
+                            sub: [
+                                "On iPhone: Settings → Phone → Silence Unknown Callers or filter SMS.",
+                                "On Android: use the Phone app’s spam filter and Messages’ spam protection.",
+                                "Enable carrier spam protection services if included in your plan.",
+                            ],
+                        },
+                        {
+                            main: "Limitations of Do Not Call lists",
+                            sub: [
+                                "Registering can reduce legitimate telemarketing, but scammers ignore the list.",
+                                "Report persistent scams to the Canadian Anti-Fraud Centre (antifraudcentre-centreantifraude.ca).",
+                                "Share examples with friends/family so everyone stays alert.",
+                            ],
+                        },
+                    ],
+                },
+                {
+                    title: "Two-Factor Authentication (2FA)",
+                    content: [
+                        {
+                            main: "What 2FA means",
+                            sub: [
+                                "Adds a second proof of identity after your password (something you have or are).",
+                                "Most common forms are codes sent by text, authenticator app codes, or hardware keys.",
+                                "Some banks also use push approvals or phone call verification.",
+                            ],
+                        },
+                        {
+                            main: "Why it matters",
+                            sub: [
+                                "Even if someone guesses or steals your password, they still need the second factor.",
+                                "Greatly reduces account takeovers for email, banking, and social media.",
+                                "Worth the extra few seconds during sign-in for the added protection.",
+                            ],
+                        },
+                        {
+                            main: "How to set it up",
+                            sub: [
+                                "Check the security settings for each important account and look for “Two-Step Verification” or “2FA.”",
+                                "Start with email, banking, mobile carrier, and cloud storage accounts.",
+                                "Authenticator apps (Microsoft Authenticator, Google Authenticator, Authy) are more secure than SMS when available.",
+                            ],
+                        },
+                        {
+                            main: "Staying prepared",
+                            sub: [
+                                "Print or safely store backup codes in case you lose your phone.",
+                                "Add a trusted contact or alternate phone number where the service allows it.",
+                                "When upgrading phones, move your authenticator codes before resetting the old device.",
+                            ],
+                        },
+                    ],
+                },
+                {
+                    title: "App Permissions",
+                    content: [
+                        {
+                            main: "What apps are asking to access",
+                            sub: ["Camera", "Microphone", "Location", "Contacts", "Photos"],
+                        },
+                        {
+                            main: "When to allow or deny",
+                            sub: [
+                                "Grant only what an app truly needs (e.g., maps need location; a puzzle game does not).",
+                                "Deny first—if the app breaks, you can allow it later.",
+                                "Watch for apps asking for contacts or microphone access without a clear reason.",
+                            ],
+                        },
+                        {
+                            main: "Reviewing permissions later",
+                            sub: [
+                                "On iPhone: Settings → Privacy & Security → select the permission (Camera, Photos, etc.).",
+                                "On Android: Settings → Privacy → Permission manager.",
+                                "Turn off access for apps you no longer use or trust.",
+                            ],
+                        },
+                        {
+                            main: "Understanding location choices",
+                            sub: [
+                                "'Always' lets the app track in the background—reserve this for navigation or safety apps.",
+                                "'While Using' shares location only when the app is open—best default option.",
+                                "'Never' blocks access entirely; you can enable it later if needed.",
+                            ],
+                        },
+                        "If an app behaves oddly or drains battery, review its permissions—it may be doing more than expected.",
+                    ],
+                },
+                {
+                    title: "Emergency Features",
+                    content: [
+                        {
+                            main: "Emergency SOS",
+                            sub: [
+                                "iPhone: hold the side button + volume button; Android: usually press the power button 5 times (varies by manufacturer).",
+                                "Triggers a loud siren (optional) and automatically calls emergency services.",
+                                "After the call, it can notify emergency contacts with your location.",
+                            ],
+                        },
+                        {
+                            main: "Medical ID / Emergency Information",
+                            sub: [
+                                "On iPhone: Health app → Medical ID → Edit to add conditions, medications, and emergency contacts.",
+                                "On Android: Settings → Safety & emergency → Medical information.",
+                                "First responders can view this info from the lock screen without your passcode.",
+                            ],
+                        },
+                        {
+                            main: "Fall detection and safety apps",
+                            sub: [
+                                "Apple Watch and some Android watches can detect hard falls and prompt you to call for help.",
+                                "Set up emergency sharing apps (e.g., Life360, Google Safety) for family check-ins.",
+                                "Review settings so accidental triggers are less likely.",
+                            ],
+                        },
+                        {
+                            main: "Location sharing",
+                            sub: [
+                                "Use trusted services like Apple’s Find My or Google’s Location Sharing.",
+                                "Share live location with close family during travel or health appointments.",
+                                "Remember you can pause sharing anytime for privacy.",
+                            ],
+                        },
+                        "Add ICE (In Case of Emergency) contacts to your phone and wallet. Make sure they know important medications and allergies.",
+                    ],
+                },
+                {
+                    title: "Battery Life Tips",
+                    content: [
+                        "Normal charging habits (no need to let it drain completely)",
+                        "When to worry about battery health",
+                        "Low Power Mode and Battery Saver mode",
+                        {
+                            main: "What drains battery most",
+                            sub: ["Screen brightness", "Background apps", "Location services", "Push notifications"],
+                        },
+                        "Debunking myths (closing apps, overnight charging)",
+                    ],
+                },
+                {
+                    title: "When to Restart vs. When to Seek Help",
+                    content: [
+                        "Simple restart fixes many issues",
+                        "When an app freezes or acts strange",
+                        "Force closing apps that won't respond",
+                        "Factory reset - when it's needed and what it means",
+                        "When to visit the store or call support",
+                    ],
+                },
+            ];
+
+            function TopicCard({ topic, isOpen, onToggle }) {
+                const renderContent = (items) => {
+                    return items.map((item, idx) => {
+                        if (typeof item === "string") {
+                            return <li key={idx}>{item}</li>;
+                        } else {
+                            return (
+                                <li key={idx}>
+                                    {item.main}
+                                    {item.sub && (
+                                        <ul>
+                                            {item.sub.map((subItem, subIdx) => (
+                                                <li key={subIdx}>{subItem}</li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </li>
+                            );
+                        }
+                    });
+                };
+
+                return (
+                    <div className="topic-card">
+                        <div className={`topic-header ${isOpen ? "active" : ""}`} onClick={onToggle}>
+                            <div className="topic-title">{topic.title}</div>
+                            <div className={`toggle-icon ${isOpen ? "open" : ""}`}>▼</div>
+                        </div>
+                        <div className={`topic-content ${isOpen ? "open" : ""}`}>
+                            <ul>{renderContent(topic.content)}</ul>
+                        </div>
+                    </div>
+                );
+            }
+
+            function App() {
+                const [searchTerm, setSearchTerm] = useState("");
+                const [openTopics, setOpenTopics] = useState({});
+
+                const filteredTopics = useMemo(() => {
+                    if (!searchTerm.trim()) return workshopData;
+
+                    const search = searchTerm.toLowerCase();
+                    return workshopData.filter((topic) => {
+                        // Search in title
+                        if (topic.title.toLowerCase().includes(search)) return true;
+
+                        // Search in content
+                        return topic.content.some((item) => {
+                            if (typeof item === "string") {
+                                return item.toLowerCase().includes(search);
+                            } else {
+                                const mainMatch = item.main.toLowerCase().includes(search);
+                                const subMatch = item.sub?.some((sub) => sub.toLowerCase().includes(search));
+                                return mainMatch || subMatch;
+                            }
+                        });
+                    });
+                }, [searchTerm]);
+
+                const toggleTopic = (index) => {
+                    setOpenTopics((prev) => ({
+                        ...prev,
+                        [index]: !prev[index],
+                    }));
+                };
+
+                const expandAll = () => {
+                    const allOpen = {};
+                    filteredTopics.forEach((_, idx) => {
+                        allOpen[idx] = true;
+                    });
+                    setOpenTopics(allOpen);
+                };
+
+                const collapseAll = () => {
+                    setOpenTopics({});
+                };
+
+                return (
+                    <div className="container">
+                        <div className="header">
+                            <h1>📱 Cellphone Workshop Guide</h1>
+                            <p>Your reference for all things mobile</p>
+                        </div>
+
+                        <div className="search-container">
+                            <input
+                                type="text"
+                                className="search-box"
+                                placeholder="🔍 Search topics... (e.g., 'security', 'photos', 'WiFi')"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="content">
+                            {filteredTopics.length > 0 ? (
+                                <>
+                                    <div className="results-count">
+                                        Showing {filteredTopics.length} of {workshopData.length} topics
+                                        {filteredTopics.length > 0 && (
+                                            <span style={{ marginLeft: "20px" }}>
+                                                <button
+                                                    onClick={expandAll}
+                                                    style={{
+                                                        padding: "8px 16px",
+                                                        marginRight: "10px",
+                                                        cursor: "pointer",
+                                                        border: "2px solid #667eea",
+                                                        background: "white",
+                                                        color: "#667eea",
+                                                        borderRadius: "6px",
+                                                        fontSize: "0.95em",
+                                                        fontWeight: "600",
+                                                    }}
+                                                >
+                                                    Expand All
+                                                </button>
+                                                <button
+                                                    onClick={collapseAll}
+                                                    style={{
+                                                        padding: "8px 16px",
+                                                        cursor: "pointer",
+                                                        border: "2px solid #667eea",
+                                                        background: "white",
+                                                        color: "#667eea",
+                                                        borderRadius: "6px",
+                                                        fontSize: "0.95em",
+                                                        fontWeight: "600",
+                                                    }}
+                                                >
+                                                    Collapse All
+                                                </button>
+                                            </span>
+                                        )}
+                                    </div>
+                                    {filteredTopics.map((topic, index) => (
+                                        <TopicCard
+                                            key={index}
+                                            topic={topic}
+                                            isOpen={openTopics[index]}
+                                            onToggle={() => toggleTopic(index)}
+                                        />
+                                    ))}
+                                </>
+                            ) : (
+                                <div className="no-results">
+                                    <div className="no-results-icon">🔍</div>
+                                    <h2>No topics found</h2>
+                                    <p>Try searching for something else like 'security', 'photos', or 'WiFi'</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                );
+            }
+
+            ReactDOM.render(<App />, document.getElementById("root"));
+        </script>
+    </body>
+</html>
