@@ -35,7 +35,12 @@
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 color: white;
                 padding: 40px 30px;
-                text-align: center;
+                text-align: left;
+                display: flex;
+                flex-direction: row;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 24px;
             }
 
             .header h1 {
@@ -48,9 +53,18 @@
                 opacity: 0.95;
             }
 
+            .header-text {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+                gap: 8px;
+                flex: 1;
+            }
+
             .header .site-link {
                 display: inline-block;
-                margin-top: 8px;
+                margin-top: 4px;
                 font-size: 1em;
                 color: rgba(255, 255, 255, 0.9);
             }
@@ -65,22 +79,17 @@
                 border-bottom-color: #fff;
             }
 
-                .header .site-link {
-                    display: inline-block;
-                    margin-top: 8px;
-                    font-size: 1em;
-                    color: rgba(255, 255, 255, 0.9);
-                }
+            .qr-code {
+                width: 120px;
+                height: 120px;
+                flex-shrink: 0;
+            }
 
-                .header .site-link a {
-                    color: inherit;
-                    text-decoration: none;
-                    border-bottom: 1px dotted rgba(255, 255, 255, 0.6);
-                }
-
-                .header .site-link a:hover {
-                    border-bottom-color: #fff;
-                }
+            .qr-code img {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
 
             .search-container {
                 padding: 30px;
@@ -261,6 +270,12 @@
             }
 
             @media (max-width: 768px) {
+                .header {
+                    flex-direction: column;
+                    align-items: center;
+                    text-align: center;
+                }
+
                 .header h1 {
                     font-size: 2em;
                 }
@@ -269,12 +284,22 @@
                     font-size: 1em;
                 }
 
+                .header-text {
+                    align-items: center;
+                    text-align: center;
+                }
+
                 .topic-title {
                     font-size: 1.1em;
                 }
 
                 .search-box {
                     font-size: 1em;
+                }
+
+                .qr-code {
+                    width: 100px;
+                    height: 100px;
                 }
             }
 
@@ -303,6 +328,9 @@
                     color: #111;
                     text-align: left;
                     padding: 8px 0;
+                    flex-direction: row;
+                    align-items: flex-start;
+                    justify-content: space-between;
                 }
 
                 .header h1 {
@@ -316,6 +344,12 @@
                     color: #444;
                 }
 
+                .header-text {
+                    align-items: flex-start;
+                    text-align: left;
+                    gap: 4px;
+                }
+
                 .header .site-link {
                     margin-top: 4px;
                     font-size: 0.85em;
@@ -324,6 +358,13 @@
 
                 .header .site-link a {
                     border-bottom: none;
+                }
+
+                .qr-code {
+                    width: 96px;
+                    height: 96px;
+                    margin-left: 20px;
+                    align-self: flex-start;
                 }
 
                 .search-container,
@@ -440,7 +481,10 @@
                             sub: [
                                 "Blue bubbles on iPhone mean iMessage (uses Wi-Fi/data, works iPhone-to-iPhone).",
                                 "Green bubbles are standard text (SMS/MMS) used when messaging Android or without internet.",
-                                { text: "Newer RCS texting aims to make cross-platform chats richer, but it is still rolling out.", printSkip: true },
+                                {
+                                    text: "Newer RCS texting aims to make cross-platform chats richer, but it is still rolling out.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -448,22 +492,32 @@
                             sub: [
                                 "Apple App Store purchases stay on iPhone/iPad; Google Play purchases stay on Android.",
                                 "Subscriptions and apps rarely transfer, so consider ongoing costs before switching.",
-                                { text: "Accessories (watches, trackers) often work best within the same ecosystem.", printSkip: true },
+                                {
+                                    text: "Accessories (watches, trackers) often work best within the same ecosystem.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
                             main: "Switching is doable but takes planning",
                             sub: [
                                 "Back up contacts, photos, and notes first (iCloud or Google).",
-                                { text: "Expect to sign in to accounts again and find replacement apps.", printSkip: true },
+                                {
+                                    text: "Expect to sign in to accounts again and find replacement apps.",
+                                    printSkip: true,
+                                },
                                 { text: "Budget time to learn the new settings menus and gestures.", printSkip: true },
                             ],
                         },
-                        { text: "Hardware differences are modest: Apple controls its devices, while Android offers many brands and price ranges to fit different budgets.", printSkip: true },
+                        {
+                            text: "Hardware differences are modest: Apple controls its devices, while Android offers many brands and price ranges to fit different budgets.",
+                            printSkip: true,
+                        },
                     ],
                 },
 
-                { printSkipSection: true,
+                {
+                    printSkipSection: true,
                     title: "📶 WiFi vs. Cellular Data",
                     content: [
                         {
@@ -471,7 +525,10 @@
                             sub: [
                                 "Wi-Fi uses a local network (home router, café) and usually does not count against your data plan.",
                                 "Cellular data uses your carrier’s towers and counts toward your monthly data limit.",
-                                { text: "Both let you browse the web, email, and stream video; choose Wi-Fi when available to save data.", printSkip: true },
+                                {
+                                    text: "Both let you browse the web, email, and stream video; choose Wi-Fi when available to save data.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -479,7 +536,10 @@
                             sub: [
                                 "Open Wi-Fi settings, pick the network name (SSID), and enter the password once.",
                                 "Phones remember trusted networks and reconnect automatically next time.",
-                                { text: "Look for the Wi-Fi fan icon at the top of the screen to confirm connection.", printSkip: true },
+                                {
+                                    text: "Look for the Wi-Fi fan icon at the top of the screen to confirm connection.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -487,7 +547,10 @@
                             sub: [
                                 "Prefer networks that require a password; avoid unknown open networks for banking or shopping.",
                                 "Do not share sensitive information on public Wi-Fi unless using secure websites (`https`).",
-                                { text: "Log out when finished in a public place and forget networks you no longer use.", printSkip: true },
+                                {
+                                    text: "Log out when finished in a public place and forget networks you no longer use.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -495,7 +558,10 @@
                             sub: [
                                 "Turn cellular data off temporarily if you are near your monthly cap.",
                                 "Most phones show which apps use the most data—close heavy users or switch them to Wi-Fi.",
-                                { text: "Use low-data modes or download content (music, maps) over Wi-Fi for trips.", printSkip: true },
+                                {
+                                    text: "Use low-data modes or download content (music, maps) over Wi-Fi for trips.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -503,20 +569,27 @@
                             sub: [
                                 "Disables all wireless radios (cellular, Wi-Fi, Bluetooth) with one tap—use on flights or to save battery.",
                                 "You can turn Wi-Fi back on manually while still in airplane mode if the airline allows it.",
-                                { text: "Remember to turn airplane mode off to receive calls and texts again.", printSkip: true },
+                                {
+                                    text: "Remember to turn airplane mode off to receive calls and texts again.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                     ],
                 },
 
-                { printSkipSection: true,
+                {
+                    printSkipSection: true,
                     title: "📋 Cell Phone Plans and Features",
                     content: [
                         {
                             main: "Understand Canadian plan options",
                             sub: [
                                 "Fewer carriers mean higher prices—compare major brands (Bell/TELUS/Rogers) with their flanker brands (Koodo, Fido, Virgin, etc.).",
-                                { text: "Limited data plans stop or charge extra when you hit the cap; “unlimited” plans slow speeds after the high-speed bucket.", printSkip: true },
+                                {
+                                    text: "Limited data plans stop or charge extra when you hit the cap; “unlimited” plans slow speeds after the high-speed bucket.",
+                                    printSkip: true,
+                                },
                                 "Ask about senior discounts or bundled services (home internet, TV) for savings.",
                             ],
                         },
@@ -524,16 +597,28 @@
                             main: "Talk, text, and data features to review",
                             sub: [
                                 "Most plans now include unlimited nationwide calling and texting.",
-                                { text: "Check if voicemail, call display, and hotspot tethering are included by default.", printSkip: true },
-                                { text: "Look for data rollover or shareable data if you have multiple devices.", printSkip: true },
+                                {
+                                    text: "Check if voicemail, call display, and hotspot tethering are included by default.",
+                                    printSkip: true,
+                                },
+                                {
+                                    text: "Look for data rollover or shareable data if you have multiple devices.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
                             main: "Travel-friendly options",
                             sub: [
                                 "If you visit the U.S. or overseas often, compare roaming passes vs. buying a local SIM/eSIM.",
-                                { text: "Some carriers offer “Roam Like Home” daily fees—make sure you know how to turn roaming off when not needed.", printSkip: true },
-                                { text: "Confirm your phone is unlocked if you plan to use another carrier while abroad.", printSkip: true },
+                                {
+                                    text: "Some carriers offer “Roam Like Home” daily fees—make sure you know how to turn roaming off when not needed.",
+                                    printSkip: true,
+                                },
+                                {
+                                    text: "Confirm your phone is unlocked if you plan to use another carrier while abroad.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -541,7 +626,10 @@
                             sub: [
                                 "Use the carrier’s app or dial-in shortcode to check data usage mid-cycle.",
                                 "Set usage alerts so you don’t go over caps.",
-                                { text: "Review bills for add-on charges or plan changes every few months.", printSkip: true },
+                                {
+                                    text: "Review bills for add-on charges or plan changes every few months.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         "Consider switching plans when your needs change or when better promos appear—especially after your contract term ends.",
@@ -556,7 +644,10 @@
                             sub: [
                                 "Frequent top-ups are fine—modern batteries do not need to drain fully.",
                                 "Avoid letting the phone stay at 0% or in extreme heat/cold for long periods.",
-                                { text: "Use trusted chargers and cables to prevent slow charging or damage.", printSkip: true },
+                                {
+                                    text: "Use trusted chargers and cables to prevent slow charging or damage.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -570,8 +661,14 @@
                             main: "Use power-saving modes",
                             sub: [
                                 "Turn on Low Power Mode (iPhone) or Battery Saver (Android) when traveling or during long days.",
-                                { text: "These modes reduce background activity, dim the screen slightly, and limit visual effects.", printSkip: true },
-                                { text: "You can schedule them to activate automatically at a chosen battery percentage.", printSkip: true },
+                                {
+                                    text: "These modes reduce background activity, dim the screen slightly, and limit visual effects.",
+                                    printSkip: true,
+                                },
+                                {
+                                    text: "You can schedule them to activate automatically at a chosen battery percentage.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -579,7 +676,10 @@
                             sub: [
                                 "High screen brightness and long screen-on time.",
                                 "Background activity from social media, maps, or email sync.",
-                                { text: "Location services running continuously and constant push notifications.", printSkip: true },
+                                {
+                                    text: "Location services running continuously and constant push notifications.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -587,13 +687,17 @@
                             sub: [
                                 "Force-closing every app does not extend battery life and can slow the phone down.",
                                 "Overnight charging is safe—phones stop charging once full.",
-                                { text: "5G can use more power; switch to LTE in weak-signal areas if battery life is critical.", printSkip: true },
+                                {
+                                    text: "5G can use more power; switch to LTE in weak-signal areas if battery life is critical.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                     ],
                 },
 
-                { printSkipSection: true,
+                {
+                    printSkipSection: true,
                     title: "🔊 Bluetooth Basics",
                     content: [
                         {
@@ -601,7 +705,10 @@
                             sub: [
                                 "Short-range wireless link for accessories such as headphones, hearing aids, car infotainment, keyboards.",
                                 "Works best within a room (about 10 meters) without walls or metal blocking the signal.",
-                                { text: "No data charges—Bluetooth is separate from Wi-Fi and cellular plans.", printSkip: true },
+                                {
+                                    text: "No data charges—Bluetooth is separate from Wi-Fi and cellular plans.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -609,7 +716,10 @@
                             sub: [
                                 "Turn on the accessory and put it in pairing mode (often by holding a button).",
                                 "Open Bluetooth settings on the phone and tap the accessory name when it appears.",
-                                { text: "Some devices ask for a code like 0000; the phone usually fills this in automatically.", printSkip: true },
+                                {
+                                    text: "Some devices ask for a code like 0000; the phone usually fills this in automatically.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -617,7 +727,10 @@
                             sub: [
                                 "You can rename accessories (e.g., “Dave’s Hearing Aid”) for easier recognition.",
                                 "Tap “Disconnect” to stop using it temporarily or “Forget” to remove it entirely.",
-                                { text: "Phones remember multiple accessories and reconnect when they’re nearby and powered on.", printSkip: true },
+                                {
+                                    text: "Phones remember multiple accessories and reconnect when they’re nearby and powered on.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -625,7 +738,10 @@
                             sub: [
                                 "If it won’t connect, toggle Bluetooth off/on or restart the accessory.",
                                 "Make sure the accessory is charged and not already paired with someone else’s device.",
-                                { text: "Delete (forget) the device and pair again if the connection keeps dropping.", printSkip: true },
+                                {
+                                    text: "Delete (forget) the device and pair again if the connection keeps dropping.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         "Leaving Bluetooth on has minimal battery impact on modern phones; turn it off only if you never use accessories.",
@@ -641,7 +757,10 @@
                             sub: [
                                 "App updates come from the App Store/Google Play and tweak individual apps.",
                                 "System updates come from Apple or your Android phone maker and change the whole device software.",
-                                { text: "Small point releases (e.g., 16.5 → 16.6) usually fix bugs; major jumps (16 → 17) redesign features.", printSkip: true },
+                                {
+                                    text: "Small point releases (e.g., 16.5 → 16.6) usually fix bugs; major jumps (16 → 17) redesign features.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -657,7 +776,10 @@
                             sub: [
                                 "iPhones typically get 5–6 years of iOS updates after release.",
                                 "Google Pixel phones get at least 5 years; Samsung offers 4–7 depending on model.",
-                                { text: "Very low-cost Android phones may stop earlier—plan for replacements every few years.", printSkip: true },
+                                {
+                                    text: "Very low-cost Android phones may stop earlier—plan for replacements every few years.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                     ],
@@ -673,7 +795,10 @@
                             sub: [
                                 "Both Apple and Google include a small free tier (e.g., 5 GB on iCloud, 15 GB on Google).",
                                 "Heavy photo takers may need a paid plan for more space (a few dollars per month).",
-                                { text: "Storage plans can be shared with family members to save money.", printSkip: true },
+                                {
+                                    text: "Storage plans can be shared with family members to save money.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -682,7 +807,10 @@
                                 "“Does the public see my photos?” — No, files stay private to your account unless you share them.",
                                 "“Will it eat my data plan?” — Sync happens over Wi-Fi by default; you can turn off cellular uploads.",
                                 "“Is it hard to use?” — Once set up, backups happen automatically in the background.",
-                                { text: "“What if I forget the password?” — Keep recovery info up to date; password managers help here.", printSkip: true },
+                                {
+                                    text: "“What if I forget the password?” — Keep recovery info up to date; password managers help here.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                     ],
@@ -692,13 +820,19 @@
                     title: "🛡️ Security Best Practices",
                     content: [
                         "Turn on automatic updates so security fixes arrive quickly, even if the interface changes occasionally.",
-                        { text: "Staying up to date prevents known vulnerabilities that scammers use to take over phones.", printSkip: true },
+                        {
+                            text: "Staying up to date prevents known vulnerabilities that scammers use to take over phones.",
+                            printSkip: true,
+                        },
                         {
                             main: "Create memorable, strong passwords",
                             sub: [
                                 "Avoid reusing the same password on multiple accounts.",
                                 "Use a personal pattern or mnemonic (e.g., `Fruit_SomethingYouKnow` `Appl3_Orang3_DogsName!`).",
-                                { text: "Mix letters, numbers, and symbols; length matters more than complexity.", printSkip: true },
+                                {
+                                    text: "Mix letters, numbers, and symbols; length matters more than complexity.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         "Turn on biometric sign-in (Face ID, Touch ID, fingerprint) for quicker, more secure access without typing passwords.",
@@ -716,7 +850,10 @@
                             sub: [
                                 "Camera or sensor maps unique points on your face or fingertip.",
                                 "A secure chip stores an encrypted copy; the photo/fingerprint image is never uploaded.",
-                                { text: "The phone compares the live scan to that stored template each time you unlock.", printSkip: true },
+                                {
+                                    text: "The phone compares the live scan to that stored template each time you unlock.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -724,14 +861,20 @@
                             sub: [
                                 "Find Face ID/Touch ID settings (iPhone) or Biometrics (Android).",
                                 "Remove glasses or smudges during the first scan; add an alternate appearance if you wear them often.",
-                                { text: "Enroll more than one finger in case of bandages or dry skin.", printSkip: true },
+                                {
+                                    text: "Enroll more than one finger in case of bandages or dry skin.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
                             main: "Privacy and security benefits",
                             sub: [
                                 "Faster unlocks mean you actually keep the phone locked when not in use.",
-                                { text: "Harder for others to guess or shoulder-surf compared with passcodes.", printSkip: true },
+                                {
+                                    text: "Harder for others to guess or shoulder-surf compared with passcodes.",
+                                    printSkip: true,
+                                },
                                 "The biometric data stays on the device—Apple and Google do not receive your face or fingerprint.",
                             ],
                         },
@@ -739,7 +882,10 @@
                             main: "When you still need a passcode",
                             sub: [
                                 "After restarting the phone or leaving it locked for 48 hours.",
-                                { text: "Changing security settings, installing profiles, or adding new biometrics.", printSkip: true },
+                                {
+                                    text: "Changing security settings, installing profiles, or adding new biometrics.",
+                                    printSkip: true,
+                                },
                                 "When the sensor cannot read (winter gloves, masks without Face ID setup).",
                             ],
                         },
@@ -748,7 +894,10 @@
                             sub: [
                                 "Type the passcode to unlock, then clean the sensor and try again.",
                                 "Re-enroll your face/fingerprint if your appearance changes significantly.",
-                                { text: "Seek service if the hardware keeps failing; repeated failures can disable Face/Touch ID until reset.", printSkip: true },
+                                {
+                                    text: "Seek service if the hardware keeps failing; repeated failures can disable Face/Touch ID until reset.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                     ],
@@ -762,15 +911,24 @@
                             sub: [
                                 "Adds a second proof of identity after your password (something you have or are).",
                                 "Most common forms are codes sent by text, authenticator app codes, or hardware keys.",
-                                { text: "Some banks also use push approvals or phone call verification.", printSkip: true },
+                                {
+                                    text: "Some banks also use push approvals or phone call verification.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
                             main: "Why it matters",
                             sub: [
                                 "Even if someone guesses or steals your password, they still need the second factor.",
-                                { text: "Greatly reduces account takeovers for email, banking, and social media.", printSkip: true },
-                                { text: "Worth the extra few seconds during sign-in for the added protection.", printSkip: true },
+                                {
+                                    text: "Greatly reduces account takeovers for email, banking, and social media.",
+                                    printSkip: true,
+                                },
+                                {
+                                    text: "Worth the extra few seconds during sign-in for the added protection.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -778,15 +936,24 @@
                             sub: [
                                 "Check the security settings for each important account and look for “Two-Step Verification” or “2FA.”",
                                 "Start with email, banking, mobile carrier, and cloud storage accounts.",
-                                { text: "Authenticator apps (Microsoft Authenticator, Google Authenticator, Authy) are more secure than SMS when available.", printSkip: true },
+                                {
+                                    text: "Authenticator apps (Microsoft Authenticator, Google Authenticator, Authy) are more secure than SMS when available.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
                             main: "Staying prepared",
                             sub: [
                                 "Print or safely store backup codes in case you lose your phone.",
-                                { text: "Add a trusted contact or alternate phone number where the service allows it.", printSkip: true },
-                                { text: "When upgrading phones, move your authenticator codes before resetting the old device.", printSkip: true },
+                                {
+                                    text: "Add a trusted contact or alternate phone number where the service allows it.",
+                                    printSkip: true,
+                                },
+                                {
+                                    text: "When upgrading phones, move your authenticator codes before resetting the old device.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                     ],
@@ -797,14 +964,23 @@
                     content: [
                         {
                             main: "What apps are asking to access",
-                            sub: ["Camera", "Microphone", "Location", { text: "Contacts", printSkip: true }, { text: "Photos", printSkip: true }],
+                            sub: [
+                                "Camera",
+                                "Microphone",
+                                "Location",
+                                { text: "Contacts", printSkip: true },
+                                { text: "Photos", printSkip: true },
+                            ],
                         },
                         {
                             main: "When to allow or deny",
                             sub: [
                                 "Grant only what an app truly needs (e.g., maps need location; a puzzle game does not).",
                                 "Deny first—if the app breaks, you can allow it later.",
-                                { text: "Watch for apps asking for contacts or microphone access without a clear reason.", printSkip: true },
+                                {
+                                    text: "Watch for apps asking for contacts or microphone access without a clear reason.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -820,14 +996,18 @@
                             sub: [
                                 "'Always' lets the app track in the background—reserve this for navigation or safety apps.",
                                 "'While Using' shares location only when the app is open—best default option.",
-                                { text: "'Never' blocks access entirely; you can enable it later if needed.", printSkip: true },
+                                {
+                                    text: "'Never' blocks access entirely; you can enable it later if needed.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         "If an app behaves oddly or drains battery, review its permissions—it may be doing more than expected.",
                     ],
                 },
 
-                { printSkipSection: true,
+                {
+                    printSkipSection: true,
                     title: "🚫 Scam Calls and Texts",
                     content: [
                         {
@@ -835,7 +1015,10 @@
                             sub: [
                                 "Robocalls pretending to be banks, CRA, or delivery companies.",
                                 "Spoofed caller ID—numbers may look local or mimic a trusted organization.",
-                                { text: "Texts with links to “missed deliveries,” fake contests, or refund claims.", printSkip: true },
+                                {
+                                    text: "Texts with links to “missed deliveries,” fake contests, or refund claims.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -843,7 +1026,10 @@
                             sub: [
                                 "Hang up if pressured to act immediately or pay with gift cards/crypto.",
                                 "Never share personal info unless you dialed the organization yourself.",
-                                { text: "Ask for a callback number, then verify it on the official website before responding.", printSkip: true },
+                                {
+                                    text: "Ask for a callback number, then verify it on the official website before responding.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -859,7 +1045,10 @@
                             sub: [
                                 "On iPhone: Settings → Phone → Silence Unknown Callers or filter SMS.",
                                 "On Android: use the Phone app’s spam filter and Messages’ spam protection.",
-                                { text: "Enable carrier spam protection services if included in your plan.", printSkip: true },
+                                {
+                                    text: "Enable carrier spam protection services if included in your plan.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -867,7 +1056,10 @@
                             sub: [
                                 "Registering can reduce legitimate telemarketing, but scammers ignore the list.",
                                 "Report persistent scams to the Canadian Anti-Fraud Centre (antifraudcentre-centreantifraude.ca).",
-                                { text: "Share examples with friends/family so everyone stays alert.", printSkip: true },
+                                {
+                                    text: "Share examples with friends/family so everyone stays alert.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                     ],
@@ -887,7 +1079,10 @@
                             ],
                         },
                         "Verify the sender: ask how you can call them back using the official number on the organization’s website.",
-                        { text: "Legitimate organizations are happy to point you to their published contact info; scammers usually push you to act immediately and refuse that request.", printSkip: true },
+                        {
+                            text: "Legitimate organizations are happy to point you to their published contact info; scammers usually push you to act immediately and refuse that request.",
+                            printSkip: true,
+                        },
                         "If something feels off, stop responding and double-check before clicking or paying.",
                         {
                             main: "Common phishing scenarios targeting seniors in Canada",
@@ -904,7 +1099,10 @@
                                 "Pause and call a trusted family member or tech-savvy friend first.",
                                 "Contact the real company using the phone number on your bill or their official site.",
                                 "Report impersonation attempts to local police or the Canadian Anti-Fraud Centre.",
-                                { text: "Change passwords and watch bank/credit accounts if you clicked or shared details.", printSkip: true },
+                                {
+                                    text: "Change passwords and watch bank/credit accounts if you clicked or shared details.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                     ],
@@ -918,7 +1116,10 @@
                             sub: [
                                 "iPhone: hold the side button + volume button; Android: usually press the power button 5 times (varies by manufacturer).",
                                 "Triggers a loud siren (optional) and automatically calls emergency services.",
-                                { text: "After the call, it can notify emergency contacts with your location.", printSkip: true },
+                                {
+                                    text: "After the call, it can notify emergency contacts with your location.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -926,14 +1127,20 @@
                             sub: [
                                 "On iPhone: Health app → Medical ID → Edit to add conditions, medications, and emergency contacts.",
                                 "On Android: Settings → Safety & emergency → Medical information.",
-                                { text: "First responders can view this info from the lock screen without your passcode.", printSkip: true },
+                                {
+                                    text: "First responders can view this info from the lock screen without your passcode.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
                             main: "Fall detection and safety apps",
                             sub: [
                                 "Apple Watch and some Android watches can detect hard falls and prompt you to call for help.",
-                                { text: "Set up emergency sharing apps (e.g., Life360, Google Safety) for family check-ins.", printSkip: true },
+                                {
+                                    text: "Set up emergency sharing apps (e.g., Life360, Google Safety) for family check-ins.",
+                                    printSkip: true,
+                                },
                                 { text: "Review settings so accidental triggers are less likely.", printSkip: true },
                             ],
                         },
@@ -957,7 +1164,10 @@
                             sub: [
                                 "Power the phone off and back on if things feel slow or glitchy.",
                                 "Restart solves most minor issues after an update or app install.",
-                                { text: "Encourage students to try this before seeking help—it’s quick and safe.", printSkip: true },
+                                {
+                                    text: "Encourage students to try this before seeking help—it’s quick and safe.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -965,7 +1175,10 @@
                             sub: [
                                 "Force close the app: swipe up on iPhone app switcher or Android recent apps, then reopen.",
                                 "Check the App Store/Google Play for app updates—developers fix bugs regularly.",
-                                { text: "If one app keeps crashing, uninstall and reinstall (make sure data is backed up if needed).", printSkip: true },
+                                {
+                                    text: "If one app keeps crashing, uninstall and reinstall (make sure data is backed up if needed).",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         {
@@ -981,12 +1194,16 @@
                             sub: [
                                 "Wipes the phone back to factory settings—only do this with a full backup.",
                                 "Use when the phone is unusable even after updates and reboots.",
-                                { text: "Know your Apple/Google account password; you will need it during setup.", printSkip: true },
+                                {
+                                    text: "Know your Apple/Google account password; you will need it during setup.",
+                                    printSkip: true,
+                                },
                             ],
                         },
                         "If unsure, visit a carrier store, manufacturer support, or ask a trusted family member to assist before major resets.",
                     ],
-                },];
+                },
+            ];
 
             function TopicCard({ topic, isOpen, onToggle }) {
                 const renderContent = (items) => {
@@ -1017,10 +1234,7 @@
 
                                             if (subItem?.text) {
                                                 return (
-                                                    <li
-                                                        key={subIdx}
-                                                        className={subItem.printSkip ? "print-hide" : ""}
-                                                    >
+                                                    <li key={subIdx} className={subItem.printSkip ? "print-hide" : ""}>
                                                         {subItem.text}
                                                     </li>
                                                 );
@@ -1097,12 +1311,16 @@
                 return (
                     <div className="container">
                         <div className="header">
-                            <h1>📱 Cellphone Workshop Guide</h1>
-                            <p>Your reference for all things mobile</p>
-                            <div className="site-link">
-                                <a href="https://cfw.davemo.com" target="_blank" rel="noopener noreferrer">
-                                    cfw.davemo.com
-                                </a>
+                            <div className="header-text">
+                                <h1>📱 Cellphone Workshop</h1>
+                                <div className="site-link">
+                                    <a href="https://cfw.davemo.com" target="_blank" rel="noopener noreferrer">
+                                        cfw.davemo.com
+                                    </a>
+                                </div>
+                            </div>
+                            <div className="qr-code">
+                                <img src="qr_code.png" alt="QR code linking to cfw.davemo.com" />
                             </div>
                         </div>
 
