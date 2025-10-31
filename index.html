@@ -48,6 +48,40 @@
                 opacity: 0.95;
             }
 
+            .header .site-link {
+                display: inline-block;
+                margin-top: 8px;
+                font-size: 1em;
+                color: rgba(255, 255, 255, 0.9);
+            }
+
+            .header .site-link a {
+                color: inherit;
+                text-decoration: none;
+                border-bottom: 1px dotted rgba(255, 255, 255, 0.6);
+            }
+
+            .header .site-link a:hover {
+                border-bottom-color: #fff;
+            }
+
+                .header .site-link {
+                    display: inline-block;
+                    margin-top: 8px;
+                    font-size: 1em;
+                    color: rgba(255, 255, 255, 0.9);
+                }
+
+                .header .site-link a {
+                    color: inherit;
+                    text-decoration: none;
+                    border-bottom: 1px dotted rgba(255, 255, 255, 0.6);
+                }
+
+                .header .site-link a:hover {
+                    border-bottom-color: #fff;
+                }
+
             .search-container {
                 padding: 30px;
                 background: #f8f9fa;
@@ -282,6 +316,16 @@
                     color: #444;
                 }
 
+                .header .site-link {
+                    margin-top: 4px;
+                    font-size: 0.85em;
+                    color: #333;
+                }
+
+                .header .site-link a {
+                    border-bottom: none;
+                }
+
                 .search-container,
                 .results-count,
                 .results-actions,
@@ -388,7 +432,7 @@
 
             const workshopData = [
                 {
-                    title: "iPhone vs Android",
+                    title: "📱 iPhone vs Android",
                     content: [
                         "Daily experience is now quite similar: both run touch-based apps, have voice assistants, cameras, and accessibility tools.",
                         {
@@ -420,7 +464,7 @@
                 },
 
                 { printSkipSection: true,
-                    title: "WiFi vs. Cellular Data",
+                    title: "📶 WiFi vs. Cellular Data",
                     content: [
                         {
                             main: "Key differences",
@@ -466,7 +510,7 @@
                 },
 
                 { printSkipSection: true,
-                    title: "Cell Phone Plans and Features",
+                    title: "📋 Cell Phone Plans and Features",
                     content: [
                         {
                             main: "Understand Canadian plan options",
@@ -505,7 +549,7 @@
                 },
 
                 {
-                    title: "Battery Life Tips",
+                    title: "🔋 Battery Life Tips",
                     content: [
                         {
                             main: "Charging habits that keep batteries healthy",
@@ -550,7 +594,7 @@
                 },
 
                 { printSkipSection: true,
-                    title: "Bluetooth Basics",
+                    title: "🔊 Bluetooth Basics",
                     content: [
                         {
                             main: "What Bluetooth does",
@@ -589,7 +633,7 @@
                 },
 
                 {
-                    title: "How Often to Update Your Devices",
+                    title: "🔄 How Often to Update Your Devices",
                     content: [
                         "Turn on automatic updates for both apps and the operating system so security fixes arrive quickly.",
                         {
@@ -620,7 +664,7 @@
                 },
 
                 {
-                    title: "What is the Cloud?",
+                    title: "☁️ What is the Cloud?",
                     content: [
                         "Think of the cloud as trusted internet storage: your phone keeps a copy and syncs another copy to Apple’s or Google’s servers.",
                         "If a phone is lost, damaged, or replaced, turning on iCloud (iPhone) or Google Drive/Google Photos (Android) restores photos, contacts, and notes.",
@@ -645,7 +689,7 @@
                 },
 
                 {
-                    title: "Security Best Practices",
+                    title: "🛡️ Security Best Practices",
                     content: [
                         "Turn on automatic updates so security fixes arrive quickly, even if the interface changes occasionally.",
                         { text: "Staying up to date prevents known vulnerabilities that scammers use to take over phones.", printSkip: true },
@@ -665,7 +709,7 @@
                 },
 
                 {
-                    title: "Biometric Security (FaceID, TouchID, Fingerprint)",
+                    title: "👤 Biometric Security (FaceID, TouchID, Fingerprint)",
                     content: [
                         {
                             main: "How facial and fingerprint recognition work",
@@ -711,7 +755,7 @@
                 },
 
                 {
-                    title: "Two-Factor Authentication (2FA)",
+                    title: "🔐 Two-Factor Authentication (2FA)",
                     content: [
                         {
                             main: "What 2FA means",
@@ -749,7 +793,7 @@
                 },
 
                 {
-                    title: "App Permissions",
+                    title: "⚙️ App Permissions",
                     content: [
                         {
                             main: "What apps are asking to access",
@@ -784,7 +828,7 @@
                 },
 
                 { printSkipSection: true,
-                    title: "Scam Calls and Texts",
+                    title: "🚫 Scam Calls and Texts",
                     content: [
                         {
                             main: "Common scam patterns",
@@ -830,7 +874,7 @@
                 },
 
                 {
-                    title: "How to Spot Phishing Attempts",
+                    title: "🎣 How to Spot Phishing Attempts",
                     content: [
                         "Phishing happens when someone pretends to be a trusted company or person to trick you into sharing information or money.",
                         {
@@ -867,7 +911,7 @@
                 },
 
                 {
-                    title: "Emergency Features",
+                    title: "🚨 Emergency Features",
                     content: [
                         {
                             main: "Emergency SOS",
@@ -906,7 +950,7 @@
                 },
 
                 {
-                    title: "When to Restart vs. When to Seek Help",
+                    title: "🧰 When to Restart vs. When to Seek Help",
                     content: [
                         {
                             main: "Start with a simple restart",
@@ -1055,6 +1099,11 @@
                         <div className="header">
                             <h1>📱 Cellphone Workshop Guide</h1>
                             <p>Your reference for all things mobile</p>
+                            <div className="site-link">
+                                <a href="https://cfw.davemo.com" target="_blank" rel="noopener noreferrer">
+                                    cfw.davemo.com
+                                </a>
+                            </div>
                         </div>
 
                         <div className="search-container">
