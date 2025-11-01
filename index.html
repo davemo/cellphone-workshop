@@ -97,6 +97,26 @@
                 border-bottom: 2px solid #e9ecef;
             }
 
+            .search-wrapper {
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                background: #f8f9fa;
+                padding: 20px 30px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                margin: 0 -20px;
+            }
+
+            .search-wrapper {
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                background: #f8f9fa;
+                padding: 20px 30px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                margin: 0 -20px;
+            }
+
             .search-inner {
                 display: flex;
                 align-items: center;
@@ -112,6 +132,7 @@
                 border-radius: 6px;
                 font-size: 0.95em;
                 font-weight: 600;
+                transition: all 0.2s ease-in-out;
             }
 
             .clear-search:hover {
@@ -126,6 +147,7 @@
 
             .search-box {
                 width: 100%;
+                flex: 1;
                 padding: 18px 24px;
                 font-size: 1.1em;
                 border: 3px solid #667eea;
@@ -297,10 +319,26 @@
             }
 
             @media (max-width: 768px) {
+                body {
+                    padding: 0;
+                }
+
+                .container {
+                    border-radius: 0;
+                }
+
                 .header {
                     flex-direction: column;
                     align-items: center;
                     text-align: center;
+                    border-radius: 0;
+                }
+
+                .search-wrapper {
+                    margin: 0;
+                    padding: 15px;
+                    border-radius: 0;
+                    box-shadow: none;
                 }
 
                 .search-inner {
@@ -331,12 +369,55 @@
                 }
 
                 .search-box {
-                    font-size: 1em;
+                    font-size: 16px;
                 }
 
-                .qr-code {
-                    width: 100px;
-                    height: 100px;
+                .content {
+                    padding: 20px 18px;
+                }
+
+                .topic-card {
+                    border-width: 1px;
+                }
+
+                .topic-content > ul {
+                    list-style: none;
+                    margin: 12px 0;
+                    padding-left: 0;
+                }
+
+                .topic-content > ul > li {
+                    padding-left: 22px;
+                    font-size: 1.05em;
+                    line-height: 1.4;
+                }
+
+                .topic-content > ul > li:before {
+                    content: "•";
+                    position: absolute;
+                    left: 2px;
+                    top: 0.35em;
+                    font-size: 1.2em;
+                    color: #667eea;
+                }
+
+                .topic-content ul ul {
+                    list-style: none;
+                    margin-left: 18px;
+                    padding-left: 0;
+                }
+
+                .topic-content ul ul li {
+                    padding-left: 18px;
+                    font-size: 0.95em;
+                }
+
+                .topic-content ul ul li::before {
+                    content: "–";
+                    position: absolute;
+                    left: 0;
+                    top: 0.4em;
+                    color: #764ba2;
                 }
             }
 
@@ -405,6 +486,7 @@
                 }
 
                 .search-container,
+                .search-wrapper,
                 .results-count,
                 .results-actions,
                 .toggle-icon,
@@ -1404,7 +1486,8 @@
                             </div>
                         </div>
 
-                        <div className="search-container">
+                        <div className="search-wrapper">
+                            <div className="search-container">
                             <div className="search-inner">
                                 <input
                                     type="text"
@@ -1419,6 +1502,7 @@
                                     </button>
                                 )}
                             </div>
+                                                    </div>
                         </div>
 
                         <div className="content">
