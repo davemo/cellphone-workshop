@@ -546,7 +546,7 @@
                             main: "Using public Wi-Fi safely",
                             sub: [
                                 "Prefer networks that require a password; avoid unknown open networks for banking or shopping.",
-                                "Do not share sensitive information on public Wi-Fi unless using secure websites (`https`).",
+                                "Do not share sensitive information on public Wi-Fi unless using secure websites (look for https://).",
                                 {
                                     text: "Log out when finished in a public place and forget networks you no longer use.",
                                     printSkip: true,
@@ -1055,7 +1055,7 @@
                             main: "Limitations of Do Not Call lists",
                             sub: [
                                 "Registering can reduce legitimate telemarketing, but scammers ignore the list.",
-                                "Report persistent scams to the Canadian Anti-Fraud Centre (antifraudcentre-centreantifraude.ca).",
+                                { html: "Report persistent scams to the Canadian Anti-Fraud Centre (<a href=\"https://www.antifraudcentre-centreantifraude.ca\" target=\"_blank\" rel=\"noopener noreferrer\">antifraudcentre-centreantifraude.ca</a>)." },
                                 {
                                     text: "Share examples with friends/family so everyone stays alert.",
                                     printSkip: true,
@@ -1098,7 +1098,7 @@
                             sub: [
                                 "Pause and call a trusted family member or tech-savvy friend first.",
                                 "Contact the real company using the phone number on your bill or their official site.",
-                                "Report impersonation attempts to local police or the Canadian Anti-Fraud Centre.",
+                                { html: "Report impersonation attempts to local police or the <a href=\"https://www.antifraudcentre-centreantifraude.ca\" target=\"_blank\" rel=\"noopener noreferrer\">Canadian Anti-Fraud Centre</a>." },
                                 {
                                     text: "Change passwords and watch bank/credit accounts if you clicked or shared details.",
                                     printSkip: true,
@@ -1220,6 +1220,16 @@
                             );
                         }
 
+                        if (item.html) {
+                            return (
+                                <li
+                                    key={idx}
+                                    className={item.printSkip ? "print-hide" : ""}
+                                    dangerouslySetInnerHTML={{ __html: item.html }}
+                                />
+                            );
+                        }
+
                         const itemClass = item.printSkip ? "print-hide" : "";
 
                         return (
@@ -1237,6 +1247,16 @@
                                                     <li key={subIdx} className={subItem.printSkip ? "print-hide" : ""}>
                                                         {subItem.text}
                                                     </li>
+                                                );
+                                            }
+
+                                            if (subItem?.html) {
+                                                return (
+                                                    <li
+                                                        key={subIdx}
+                                                        className={subItem.printSkip ? "print-hide" : ""}
+                                                        dangerouslySetInnerHTML={{ __html: subItem.html }}
+                                                    />
                                                 );
                                             }
 
@@ -1272,20 +1292,43 @@
                     if (!searchTerm.trim()) return workshopData;
 
                     const search = searchTerm.toLowerCase();
+                    const matchesEntry = (entry) => {
+                        if (typeof entry === "string") {
+                            return entry.toLowerCase().includes(search);
+                        }
+
+                        if (!entry || typeof entry !== "object") {
+                            return false;
+                        }
+
+                        if (entry.text && typeof entry.text === "string" && entry.text.toLowerCase().includes(search)) {
+                            return true;
+                        }
+
+                        if (entry.main && typeof entry.main === "string" && entry.main.toLowerCase().includes(search)) {
+                            return true;
+                        }
+
+                        if (entry.html && typeof entry.html === "string") {
+                            const plain = entry.html.replace(/<[^>]+>/g, "").toLowerCase();
+                            if (plain.includes(search)) {
+                                return true;
+                            }
+                        }
+
+                        if (Array.isArray(entry.sub)) {
+                            return entry.sub.some(matchesEntry);
+                        }
+
+                        return false;
+                    };
+
                     return workshopData.filter((topic) => {
                         // Search in title
                         if (topic.title.toLowerCase().includes(search)) return true;
 
                         // Search in content
-                        return topic.content.some((item) => {
-                            if (typeof item === "string") {
-                                return item.toLowerCase().includes(search);
-                            } else {
-                                const mainMatch = item.main.toLowerCase().includes(search);
-                                const subMatch = item.sub?.some((sub) => sub.toLowerCase().includes(search));
-                                return mainMatch || subMatch;
-                            }
-                        });
+                        return topic.content.some((item) => matchesEntry(item));
                     });
                 }, [searchTerm]);
 
